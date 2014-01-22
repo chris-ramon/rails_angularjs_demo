@@ -1,0 +1,1 @@
+'use strict';angular.module('frontendApp')  .factory('Post', function ($resource) {    return $resource('http://0.0.0.0:3000/posts/:id', {id: '@id'}, {        update: {method: 'PUT'}      }    );  });
