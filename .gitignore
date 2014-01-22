@@ -1,3 +1,5 @@
 .DS_Store
 .idea/
 rails_angularjs_demo.iml
+.ruby-version
+.ruby-gemset
