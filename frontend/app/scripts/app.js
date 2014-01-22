@@ -12,6 +12,22 @@ angular.module('frontendApp', [
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
       })
+      .when('/new', {
+        templateUrl: 'views/postForm.html',
+        controller: 'PostNewCtrl'
+      })
+      .when('/detail/:id', {
+        templateUrl: 'views/postDetail.html',
+        controller: 'PostDetailCtrl'
+      })
+      .when('/edit/:id', {
+        templateUrl: 'views/postForm.html',
+        controller: 'PostEditCtrl'
+      })
+      .when('/delete/:id', {
+        templateUrl: 'views/postDelete.html',
+        controller: 'PostDeleteCtrl'
+      })
       .otherwise({
         redirectTo: '/'
       });
