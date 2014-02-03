@@ -1,11 +1,12 @@
 class PostsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   before_action :set_post, only: [:edit, :update, :destroy]
+  before_filter :authenticate_user!
 
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.all.page params[:page]
     render json: @posts, status: :ok
   end
 

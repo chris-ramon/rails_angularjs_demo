@@ -1,13 +1,21 @@
 Backend::Application.routes.draw do
+  devise_for :users, :controllers => { :sessions => "sessions" }
+  devise_scope :user do
+    get 'users/current_user' => 'sessions#show_current_user', :as => 'show_current_user'
+  end
   resources :posts, defaults: {format: :json} do
     resources :comments, except: [:show, :edit], defaults: {format: :json}
   end
+
+  post 'file-upload' => 'uploads#create'
+  get 'file-upload' => 'uploads#index'
+  get "uploads/:id/:sha.:extension" => "uploads#show", constraints: {sha: /[a-z0-9]{15,16}/i, extension: /\w{2,}/}
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

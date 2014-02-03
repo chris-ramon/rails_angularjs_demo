@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def success_json
-    {sucess: 'OK'}
+    {success: 'OK'}
   end
 
   def error_json

@@ -15,8 +15,11 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
+    <link rel="stylesheet" href="bower_components/jquery-file-upload/css/jquery.fileupload.css" />
+    <link rel="stylesheet" href="bower_components/jquery-file-upload/css/jquery.fileupload-ui.css" />
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/signin.css">
     <!-- endbuild -->
   </head>
   <body ng-app="frontendApp">
@@ -26,17 +29,24 @@
 
     <!-- Add your site or application content here -->
     <div class="container">
-        <div class="header">
+        <div ng-controller="HeaderCtrl" class="header">
             <ul class="nav nav-pills pull-right">
-                <li class="active"><a ng-href="#">Home</a></li>
-                <li><a ng-href="#">About</a></li>
-                <li><a ng-href="#">Contact</a></li>
+                <li ng-class="{active: currentPage('home')}"><a ng-href="#">Home</a></li>
+                <li ng-hide='UserService.currentUser' ng-class="{active: currentPage('signin')}"><a ng-href="#/sign_in">Sign In</a></li>
+                <li ng-show='UserService.currentUser'><a ng-click="signOut()" href=''>Sign Out</a></li>
             </ul>
             <h3 class="text-muted">frontend</h3>
+            {{ currentUser }}
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12">
+                {{ flashMessage }}
+            </div>
         </div>
 
         <div ng-view class="row marketing">
-
+            
         </div>
 
         <div class="footer">
@@ -73,10 +83,30 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <!-- jquery file upload -->
+    <script src="bower_components/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+    <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+    <script src="http://blueimp.github.io/JavaScript-Load-Image/js/load-image.min.js"></script>
+    <!-- The Canvas to Blob plugin is included for image resizing functionality -->
+    <script src="http://blueimp.github.io/JavaScript-Canvas-to-Blob/js/canvas-to-blob.min.js"></script>
+    <!-- blueimp Gallery script -->
+    <script src="http://blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload-process.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload-image.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload-audio.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload-video.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
+    <script src="bower_components/jquery-file-upload/js/jquery.fileupload-angular.js"></script>
+    <!-- -->
+
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/services/UserService.js"></script>
         <script src="scripts/factories/Post.js"></script>
         <script src="scripts/factories/Comment.js"></script>
+        <script src="scripts/services/PageService.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->
 </body>

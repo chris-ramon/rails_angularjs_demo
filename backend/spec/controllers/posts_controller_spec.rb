@@ -9,6 +9,22 @@ describe PostsController do
       parsed = JSON.parse(response.body)
       parsed.length.should == 3
     end
+    it 'should paginate the results' do
+      total_per_page = Kaminari.config.default_per_page
+      (total_per_page + 1).times { create(:post) }
+      xhr :get, :index, page: 1
+      response.should be_success
+      parsed = JSON.parse(response.body)
+      parsed.length.should == total_per_page
+    end
+    it 'should return the next page' do
+      total_per_page = Kaminari.config.default_per_page
+      (total_per_page + 1).times { create(:post) }
+      xhr :get, :index, page: 2
+      response.should be_success
+      parsed = JSON.parse(response.body)
+      parsed.length.should == 1
+    end
   end
 
   describe 'POST #new' do

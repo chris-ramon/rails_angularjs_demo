@@ -19,11 +19,16 @@ module Backend
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-    config.middleware.use Rack::Cors do
+    config.middleware.insert_before Warden::Manager, Rack::Cors do
       allow do
         origins '*'
         resource '*', :headers => :any, :methods => [:get, :post, :put, :delete, :options]
       end
+    end
+
+    if Rails.env.test? || Rails.env.development?
+      # turn off csrf just for development purposes
+      config.action_controller.allow_forgery_protection = false
     end
   end
 end

@@ -4,9 +4,18 @@ angular.module('frontendApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'blueimp.fileupload'
 ])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider, fileUploadProvider) {
+    $httpProvider.defaults.withCredentials = true;
+
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    fileUploadProvider.defaults.redirect = window.location.href.replace(
+      /\/[^\/]*$/,
+      '/cors/result.html?%s'
+    );
+
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -27,6 +36,10 @@ angular.module('frontendApp', [
       .when('/delete/:id', {
         templateUrl: 'views/postDelete.html',
         controller: 'PostDeleteCtrl'
+      })
+      .when('/sign_in', {
+        templateUrl: 'views/sign_in.html',
+        controller: 'SignInCtrl'
       })
       .otherwise({
         redirectTo: '/'
