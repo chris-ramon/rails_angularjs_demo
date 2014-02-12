@@ -1,6 +1,14 @@
-# CRUDY demo app
+# Rails + AngularJS DEMO APP
 
-simple crudy app using Rails + AngularJS using $resource module.
+
+simple app using Rails + AngularJS using $resource module
+which has small implementation of the following features:
+* authentication - devise
+* permissions - custom based permissions inspired on Discourse's
+* file upload - async file upload using JQuery File Upload
+* functional/unit tests using rspec, mocha and factory girl.
+* pagination using kaminari
+
 
 ### Running backend
 ``` bash
