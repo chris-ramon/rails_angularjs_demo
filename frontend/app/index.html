@@ -15,8 +15,11 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <!-- endbower -->
     <!-- endbuild -->
+      <!-- jquery fileupload styles -->
     <link rel="stylesheet" href="bower_components/jquery-file-upload/css/jquery.fileupload.css" />
     <link rel="stylesheet" href="bower_components/jquery-file-upload/css/jquery.fileupload-ui.css" />
+    <!-- blueimp Gallery styles -->
+    <link rel="stylesheet" href="http://blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <!-- build:css({.tmp,app}) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="styles/signin.css">
@@ -83,6 +86,11 @@
     <!-- endbower -->
     <!-- endbuild -->
 
+    <!-- angular-ui bootstrap -->
+    <script src="bower_components/angular-ui-bootstrap/src/transition/transition.js"></script>
+    <script src="bower_components/angular-ui-bootstrap/src/modal/modal.js"></script>
+    <!-- -->
+
     <!-- jquery file upload -->
     <script src="bower_components/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
     <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
@@ -103,9 +111,12 @@
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/urls/UploadUrls.js"></script>
         <script src="scripts/services/UserService.js"></script>
+        <script src="scripts/services/PostService.js"></script>
         <script src="scripts/factories/Post.js"></script>
         <script src="scripts/factories/Comment.js"></script>
+        <script src="scripts/factories/Upload.js"></script>
         <script src="scripts/services/PageService.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->

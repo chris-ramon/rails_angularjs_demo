@@ -16,24 +16,29 @@ angular.module('frontendApp')
     PageService.currentPage = 'home';
     $scope.posts = Post.query();
   })
-  .controller('PostNewCtrl', function($scope, Post) {
+  .controller('PostNewCtrl', function($scope, Post, PostService) {
     $scope.post = {};
     $scope.flashMessage = '';
-
     $scope.save = function() {
-      Post.save({post: $scope.post}, function(response) {
+      Post.save({post: $scope.post, uploads: PostService.post.uploads},
+        function() {
         $scope.flashMessage = 'Post was successfully created!';
         $scope.post = {};
+        PostService.clean();
       }, function(response) {
         $scope.flashMessage = response.data;
+        PostService.clean();
       })
     }
   })
-  .controller('PostDetailCtrl', function($scope, $routeParams, Post, Comment) {
+  .controller('PostDetailCtrl', function($scope, $routeParams, Post, Comment, Upload) {
     $scope.comment = null;
     Post.get({id: $routeParams.id}, function(response) {
         $scope.post = response;
         $scope.comments = Comment.query({postId: $scope.post.id});
+        Upload.query({postId: $scope.post.id}, function(response) {
+          $scope.uploads = response.files || [];
+        });
     }, function() {
         $scope.flashMessage =  'Post does not exist!';
     });
@@ -84,24 +89,25 @@ angular.module('frontendApp')
         });
     }
   })
-  .controller('DemoFileUploadController', [
-    '$scope', '$http', '$filter', '$window', function ($scope, $http) {
-      var url = 'http://0.0.0.0:3000/file-upload';
+  .controller('PostUploadCtrl', function() {
+
+  })
+  .controller('PostUploadFormCtrl', [
+    '$scope', '$http', 'PostService', 'Upload', 'UploadUrls', '$routeParams',
+    function ($scope, $http, PostService, Upload, UploadUrls, $routeParams) {
+      var url = UploadUrls.basicUrl.replace(':postId', $routeParams.id);
       $scope.options = { url: url };
       $scope.loadingFiles = true;
-      $http.get(url)
-        .then(
-        function (response) {
-          $scope.loadingFiles = false;
-          $scope.queue = response.data.files || [];
-        },
-        function () {
-          $scope.loadingFiles = false;
-        }
-      );
+      Upload.get({postId: $routeParams.id}, function(response) {
+        $scope.loadingFiles = false;
+        PostService.post.uploads = response.files || [];
+        $scope.queue = PostService.post.uploads;
+      }, function() {
+        $scope.loadingFiles = false;
+      });
     }
   ])
-  .controller('FileDestroyController', [
+  .controller('PostUploadDestroyCtrl', [
     '$scope', '$http',
     function ($scope, $http) {
       var file = $scope.file,
