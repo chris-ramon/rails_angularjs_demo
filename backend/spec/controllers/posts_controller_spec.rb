@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe PostsController do
+  before do
+    @user = create(:user)
+    sign_in :user, @user
+  end
   describe 'GET #index' do
     it 'should responds 200' do
       3.times { create(:post) }
@@ -29,9 +33,16 @@ describe PostsController do
 
   describe 'POST #new' do
     it 'should create a post' do
-      xhr :post, :create, post: {title: 'cool title', body: 'body post'}
+      uploads = []
+      3.times do
+        upload = create(:upload)
+        uploads << {id: upload.id}
+      end
+      xhr :post, :create, post: {title: 'cool title', body: 'body post'}, uploads: uploads
       response.should be_success
       Post.count.should == 1
+      post = Post.all.first
+      post.uploads.count.should == 3
     end
     it 'should return validation errors' do
       xhr :post, :create, post: {body: 'body post'}
@@ -58,5 +69,4 @@ describe PostsController do
       post_deleted.should == nil
     end
   end
-
 end
