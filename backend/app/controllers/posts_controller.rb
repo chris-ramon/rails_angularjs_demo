@@ -35,6 +35,7 @@ class PostsController < ApplicationController
   def create
     @post = Post.new(post_params)
     if @post.save
+      Upload.set_uploadable(@post, params[:uploads]) if (params[:uploads].present?)
       render json: @post, status: :created
     else
       render json: @post.errors, status: :unprocessable_entity
@@ -57,6 +58,11 @@ class PostsController < ApplicationController
     @post.destroy
     render json: success_json, status: :ok
   end
+
+  #def uploads
+  #  uploads = Upload.where(uploadable_id: params[:post_id], uploadable_type: 'Post')
+  #  render json: uploads
+  #end
 
   private
     # Use callbacks to share common setup or constraints between actions.

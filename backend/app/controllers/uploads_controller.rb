@@ -1,14 +1,17 @@
 class UploadsController < ApplicationController
   def index
-    uploads = Upload.all
+    uploads = Upload.where(uploadable_id: params[:post_id],
+                           uploadable_type: 'Post') # should be dynamic
     response = {files: []}
     uploads.each do |upload|
       response[:files] << {id: upload.id,
                           name: upload.original_filename,
                           #type: file.content_type, # TODO: we should save the extension eg png, docx
                           size: upload.filesize,
-                          url:  upload.url,
-                          thumbnailUrl: "http://0.0.0.0:3000/#{upload.url}"}
+                          url:  "http://0.0.0.0:3000/#{upload.url}",
+                          thumbnailUrl: "http://0.0.0.0:3000/#{upload.url}",
+                          deleteUrl: "http://0.0.0.0:3000/posts/#{params[:post_id]}/uploads/#{upload.id}",
+                          deleteType: 'DELETE'}
     end
     render json: response
   end
@@ -41,6 +44,8 @@ class UploadsController < ApplicationController
           url: "",
           width: nil,
           height: nil,
+          uploadable_id: params[:post_id],
+          uploadable_type: 'Post' # should be dynamic
       )
       url = store_upload(file, upload)
       if url.present?
@@ -54,10 +59,20 @@ class UploadsController < ApplicationController
                            name: file.original_filename,
                            type: file.content_type,
                            size: filesize,
-                           url:  upload.url,
-                           thumbnailUrl: "http://0.0.0.0:3000/#{upload.url}"}]}
+                           url:  "http://0.0.0.0:3000/#{upload.url}",
+                           thumbnailUrl: "http://0.0.0.0:3000/#{upload.url}",
+                           deleteUrl: "http://0.0.0.0:3000/posts/#{params[:post_id]}/uploads/#{upload.id}",
+                           deleteType: 'DELETE'}]}
     # just for images thumbnailUrl: "http://0.0.0.0:3000/#{upload.url}"
     render json: response
+  end
+
+  def destroy
+    # TODO: should also delete from disk
+    params.require(:id)
+    upload = Upload.find(params[:id])
+    upload.destroy
+    render json: success_json
   end
 
   private
