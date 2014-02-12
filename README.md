@@ -1,8 +1,9 @@
 # Rails + AngularJS DEMO APP
 
 
-simple app using Rails + AngularJS using $resource module
-which has small implementation of the following features:
+simple app using Rails + AngularJS using $resource module.
+
+This demo has small implementation of the following features:
 * authentication - devise
 * permissions - custom based permissions inspired on Discourse's
 * file upload - async file upload using JQuery File Upload
