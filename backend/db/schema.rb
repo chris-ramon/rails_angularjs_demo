@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140203031146) do
+ActiveRecord::Schema.define(version: 20140212160443) do
 
   create_table "comments", force: true do |t|
     t.string   "body"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20140203031146) do
     t.string   "body"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "created_by_id", default: 0, null: false
   end
 
   create_table "uploads", force: true do |t|
@@ -37,21 +38,24 @@ ActiveRecord::Schema.define(version: 20140203031146) do
     t.string   "url",                          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "uploadable_id"
+    t.string   "uploadable_type"
   end
 
   create_table "users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                            default: "", null: false
+    t.string   "encrypted_password",               default: "", null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                    default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "status",                 limit: 2, default: 0,  null: false
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

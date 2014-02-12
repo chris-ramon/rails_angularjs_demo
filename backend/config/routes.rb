@@ -5,11 +5,15 @@ Backend::Application.routes.draw do
   end
   resources :posts, defaults: {format: :json} do
     resources :comments, except: [:show, :edit], defaults: {format: :json}
+    resources :uploads, except: [:edit], defaults: {format: :json} do
+      get "uploads/:id/:sha.:extension" => "uploads#show", constraints: {sha: /[a-z0-9]{15,16}/i, extension: /\w{2,}/}
+    end
   end
 
-  post 'file-upload' => 'uploads#create'
-  get 'file-upload' => 'uploads#index'
-  get "uploads/:id/:sha.:extension" => "uploads#show", constraints: {sha: /[a-z0-9]{15,16}/i, extension: /\w{2,}/}
+  #post 'file-upload' => 'uploads#create'
+  #get 'file-upload' => 'uploads#index'
+  #delete 'uploads/:id' => 'uploads#destroy'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
