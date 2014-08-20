@@ -23,7 +23,7 @@ rails s
 
 ### Running frontend
 ``` bash
-cd rails_angularjs_demo/backend/
+cd rails_angularjs_demo/frontend/
 npm install
 bower install
 grunt serve
